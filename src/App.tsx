@@ -10,13 +10,13 @@ import { AdminPanelPage } from "./pages/AdminPanelPage"
 import { AuthContext, AuthProvider, useAuth } from "./hooks/useAuth"
 
 const ProtectedAdminRoute: React.FC<PropsWithChildren> = ({ children }) => {
-  const { isFetching, isAuthenticated } = useAuth()
+  const { isFetching, isAdmin } = useAuth()
 
   if (isFetching) {
     return "Loading..."
   }
 
-  if (!isAuthenticated) return <Navigate to="/" />
+  if (!isAdmin) return <Navigate to="/" />
 
   return children
 }

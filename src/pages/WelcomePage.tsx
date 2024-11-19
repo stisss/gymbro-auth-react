@@ -35,7 +35,6 @@ export const WelcomePage: React.FC = () => {
       {isAdmin && (
         <Link style={style} to="/admin-panel">
           Admin panel
-          <Typography color="#ccc">// TODO show only for admins</Typography>
         </Link>
       )}
     </Stack>
