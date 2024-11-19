@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { Stack } from "@mui/material"
+import { SignIn } from "../features/SignIn"
 
 const style = {
   color: "white",
@@ -13,6 +14,7 @@ export const SignInPage: React.FC = () => {
       <Link style={style} to="/">
         Back to welcome page
       </Link>
+      <SignIn />
     </Stack>
   )
 }
