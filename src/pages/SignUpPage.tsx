@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { Stack } from "@mui/material"
+import { SignUp } from "../features/SignUp"
 
 const style = {
   color: "white",
@@ -13,6 +14,7 @@ export const SignUpPage: React.FC = () => {
       <Link style={style} to="/">
         Back to welcome page
       </Link>
+      <SignUp />
     </Stack>
   )
 }
