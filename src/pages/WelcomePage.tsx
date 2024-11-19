@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material"
+import { Stack, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
 
 const style = {
@@ -14,6 +14,10 @@ export const WelcomePage: React.FC = () => {
       </Link>
       <Link style={style} to="/sign-in">
         Sign in
+      </Link>
+      <Link style={style} to="/admin-panel">
+        Admin panel
+        <Typography color="#ccc">// TODO show only for admins</Typography>
       </Link>
     </Stack>
   )
