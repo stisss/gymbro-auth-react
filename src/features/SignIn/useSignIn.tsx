@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import api from "../../api"
 
 const URL = "/auth/sign-in"
@@ -13,9 +14,14 @@ type UseSignUp = () => {
 }
 
 export const useSignUp: UseSignUp = () => {
+  const navigate = useNavigate()
+
   const submit = async (data: SignUpDto) => {
     const res = await api.post(URL, data)
-    console.log(res)
+
+    if (res.status === 200) {
+      navigate("/")
+    }
   }
 
   return {
