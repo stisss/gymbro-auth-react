@@ -3,20 +3,20 @@ import api from "../../api"
 
 const URL = "/auth/sign-in"
 
-type SignUpDto = {
+type SignInDto = {
   login: string
   email: string
   password: string
 }
 
-type UseSignUp = () => {
-  submit: (data: SignUpDto) => Promise<void>
+type UseSignIn = () => {
+  submit: (data: SignInDto) => Promise<void>
 }
 
-export const useSignUp: UseSignUp = () => {
+export const useSignIn: UseSignIn = () => {
   const navigate = useNavigate()
 
-  const submit = async (data: SignUpDto) => {
+  const submit = async (data: SignInDto) => {
     const res = await api.post(URL, data)
 
     if (res.status === 200) {

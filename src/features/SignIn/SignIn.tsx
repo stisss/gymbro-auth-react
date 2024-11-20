@@ -7,7 +7,7 @@ import {
   Typography,
   Box,
 } from "@mui/material"
-import { useSignUp } from "./useSignIn"
+import { useSignIn } from "./useSignIn"
 
 interface FormInputs {
   email: string
@@ -22,7 +22,7 @@ export const SignIn = () => {
     formState: { errors },
   } = useForm<FormInputs>()
 
-  const { submit } = useSignUp()
+  const { submit } = useSignIn()
 
   const onSubmit: SubmitHandler<FormInputs> = (data) => {
     submit(data)

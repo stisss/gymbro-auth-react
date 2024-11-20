@@ -1,29 +1,65 @@
-import axios, { AxiosError } from "axios"
+import axios, { AxiosError, AxiosRequestConfig } from "axios"
 
 // TODO: MOVE TO ENV
 const BASE_URL = "http://localhost:3000"
 
+declare module "axios" {
+  interface AxiosRequestConfig {
+    _retry?: boolean
+  }
+}
+
+interface RetryQueueItem {
+  resolve: (value?: any) => void
+  reject: (error?: any) => void
+}
+
+let refreshAndRetryQueue: RetryQueueItem[] = []
+let isRefreshing = false
+
+const processQueue = (error: any = null) => {
+  refreshAndRetryQueue.forEach((promise) => {
+    if (error) {
+      promise.reject(error)
+    } else {
+      promise.resolve()
+    }
+  })
+  refreshAndRetryQueue = []
+}
+
 const api = axios.create({ baseURL: BASE_URL, withCredentials: true })
-api.defaults.withCredentials = true
 
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    console.log(error)
-    // TODO: refresh logic
-    // const originalRequest = error.config
+    const originalRequest = error.config as AxiosRequestConfig
 
-    // if (error.response.status === 401 && !originalRequest._retry) {
-    //   originalRequest._retry = true
+    if (error.response?.status === 401 && !originalRequest?._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          refreshAndRetryQueue.push({
+            resolve,
+            reject,
+          })
+        }).then(() => api(originalRequest))
+      }
 
-    //   try {
-    //     await api.post("/auth/refresh-token")
-    //     return api(originalRequest)
-    //   } catch (refreshError) {
-    //     window.location.href = "/sign-in"
-    //     return Promise.reject(refreshError)
-    //   }
-    // }
+      originalRequest._retry = true
+      isRefreshing = true
+
+      try {
+        await api.post("/auth/refresh")
+        processQueue()
+        return api(originalRequest)
+      } catch (refreshError) {
+        processQueue(refreshError)
+        window.location.href = "/"
+        return Promise.reject(refreshError)
+      } finally {
+        isRefreshing = false
+      }
+    }
 
     return Promise.reject(error)
   }
