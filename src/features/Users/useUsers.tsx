@@ -18,8 +18,10 @@ type UseUsers = () => {
 
 export const useUsers: UseUsers = () => {
   const [users, setUsers] = useState<User[]>([])
+
   const fetchUsers = async () => {
     const res = await api.get<User[]>(URL)
+
     setUsers(res.data)
   }
 

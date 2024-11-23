@@ -54,7 +54,7 @@ api.interceptors.response.use(
         return api(originalRequest)
       } catch (refreshError) {
         processQueue(refreshError)
-        window.location.href = "/"
+        window.location.href = "/sign-in"
         return Promise.reject(refreshError)
       } finally {
         isRefreshing = false
