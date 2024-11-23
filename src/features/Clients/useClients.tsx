@@ -14,12 +14,12 @@ type Client = {
 }
 
 type UseClients = () => {
-  clients: Client[]
+  clients?: Client[]
   removeClient: (id: string) => Promise<void>
 }
 
 export const useClients: UseClients = () => {
-  const [clients, setClients] = useState<Client[]>([])
+  const [clients, setClients] = useState<Client[] | undefined>()
 
   const fetchClients = async () => {
     const res = await api.get<Client[]>(URL)

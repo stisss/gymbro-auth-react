@@ -2,9 +2,11 @@ import {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react"
+import { Navigate, replace, useLocation, useNavigate } from "react-router-dom"
 import api from "../api"
 
 const ME_URL = "/auth/me"
@@ -16,16 +18,6 @@ type User = {
   isAdmin: boolean
 }
 
-type UseAuth = () => {
-  isAuthenticated: boolean
-  email?: string
-  login?: string
-  isAdmin?: boolean
-  isFetching: boolean
-  logOut: () => Promise<void>
-  authenticate: () => Promise<void>
-}
-
 type AuthState = {
   isAuthenticated: boolean
   email?: string
@@ -34,23 +26,30 @@ type AuthState = {
   isFetching: boolean
   logOut: () => Promise<void>
   authenticate: () => Promise<void>
+  redirectToSignIn: () => React.ReactElement
 }
+
+type UseAuth = () => AuthState
 
 const initialState: AuthState = {
   isAuthenticated: false,
-  isFetching: false,
+  isFetching: true,
   logOut: async () => {},
   authenticate: async () => {},
   email: "",
   isAdmin: false,
   login: "",
+  redirectToSignIn: () => <></>,
 }
 
 export const AuthContext = createContext<AuthState>(initialState)
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [me, setMe] = useState<User | null>(null)
-  const [isFetching, setIsFetching] = useState(false)
+  const [isFetching, setIsFetching] = useState(initialState.isFetching)
+
+  const navigate = useNavigate()
+  const location = useLocation()
 
   // TODO: use caching and polling instead
   const authenticate = async () => {
@@ -71,11 +70,22 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     try {
       await api.get(LOGOUT_URL)
       setMe(null)
+      navigate("/sign-in", { replace: true })
     } catch (e) {
       // TODO: handle error
       console.error(e)
     }
   }
+
+  const redirectToSignIn = () => {
+    return <Navigate to="/sign-in" state={{ from: location }} replace />
+  }
+
+  useEffect(() => {
+    if (!!me) return
+
+    authenticate()
+  }, [me])
 
   const value = useMemo(
     () => ({
@@ -86,8 +96,9 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       isFetching,
       logOut,
       authenticate,
+      redirectToSignIn,
     }),
-    [me, isFetching, logOut, authenticate]
+    [me, isFetching, logOut, authenticate, redirectToSignIn]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -95,6 +106,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 export const useAuth: UseAuth = () => {
   const auth = useContext(AuthContext)
+
+  if (!auth) {
+    throw new Error("useAuth must be used withing AuthProvider")
+  }
 
   return auth
 }
