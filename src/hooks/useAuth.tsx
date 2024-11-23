@@ -6,7 +6,7 @@ import {
   useMemo,
   useState,
 } from "react"
-import { Navigate, replace, useLocation, useNavigate } from "react-router-dom"
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import api from "../api"
 
 const ME_URL = "/auth/me"
