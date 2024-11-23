@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom"
-
-const style = {
-  color: "white",
-  fontSize: "2rem",
-}
+import Container from "@mui/material/Container"
+import Typography from "@mui/material/Typography"
 
 export const PageNotFound: React.FC = () => {
   return (
-    <Link style={style} to="/">
-      Back to welcome page
-    </Link>
+    <Container sx={{ mt: 4 }}>
+      <Typography variant="h2">Page not found</Typography>
+    </Container>
   )
 }
