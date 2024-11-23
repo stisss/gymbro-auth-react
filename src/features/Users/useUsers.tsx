@@ -12,12 +12,12 @@ type User = {
 }
 
 type UseUsers = () => {
-  users: User[]
+  users?: User[]
   removeUser: (id: string) => Promise<void>
 }
 
 export const useUsers: UseUsers = () => {
-  const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>()
 
   const fetchUsers = async () => {
     const res = await api.get<User[]>(URL)
@@ -29,7 +29,7 @@ export const useUsers: UseUsers = () => {
     const res = await api.delete(`${URL}/${id}`)
 
     if (res.status === 200) {
-      setUsers((prev) => prev.filter((u) => u.id != id))
+      setUsers((prev) => prev?.filter((u) => u.id != id))
     }
   }
 

@@ -8,7 +8,6 @@ import Box from "@mui/material/Box"
 import { useSignIn } from "./useSignIn"
 
 interface FormInputs {
-  email: string
   login: string
   password: string
 }
@@ -47,20 +46,6 @@ export const SignIn = () => {
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={formStyle}>
-          <TextField
-            label="Email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email format",
-              },
-            })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            fullWidth
-          />
-
           <TextField
             label="Login"
             {...register("login", {

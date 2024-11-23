@@ -12,10 +12,15 @@ import IconButton from "@mui/material/IconButton"
 import Button from "@mui/material/Button"
 import Delete from "@mui/icons-material/Delete"
 import Edit from "@mui/icons-material/Edit"
+import CircularProgress from "@mui/material/CircularProgress"
 import { useClients } from "./useClients"
 
 export const Clients: React.FC = () => {
   const { clients, removeClient } = useClients()
+
+  if (!clients) {
+    return <CircularProgress size={100} />
+  }
 
   return (
     <>
@@ -41,6 +46,7 @@ export const Clients: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell></TableCell>
               <TableCell>ID</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Secret</TableCell>
@@ -53,16 +59,20 @@ export const Clients: React.FC = () => {
           </TableHead>
           <TableBody>
             {clients.map(
-              ({
-                createdAt,
-                createdById,
-                id,
-                name,
-                redirectUris,
-                scopes,
-                secret,
-              }) => (
+              (
+                {
+                  createdAt,
+                  createdById,
+                  id,
+                  name,
+                  redirectUris,
+                  scopes,
+                  secret,
+                },
+                idx
+              ) => (
                 <TableRow key={id}>
+                  <TableCell>{idx + 1}</TableCell>
                   <TableCell>{id}</TableCell>
                   <TableCell>{name}</TableCell>
                   <TableCell>{secret}</TableCell>
@@ -71,10 +81,17 @@ export const Clients: React.FC = () => {
                   <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
                   <TableCell>{createdById}</TableCell>
                   <TableCell sx={{ display: "flex" }}>
-                    <IconButton component={Link} to={`/clients/${id}`}>
+                    <IconButton
+                      component={Link}
+                      to={`/clients/${id}`}
+                      color="secondary"
+                    >
                       <Edit></Edit>
                     </IconButton>
-                    <IconButton onClick={() => removeClient(id)}>
+                    <IconButton
+                      onClick={() => removeClient(id)}
+                      color="secondary"
+                    >
                       <Delete></Delete>
                     </IconButton>
                   </TableCell>
