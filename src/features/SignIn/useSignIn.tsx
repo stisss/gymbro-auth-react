@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import api from "../../api"
+import { useAuth } from "../../hooks/useAuth"
 
 const URL = "/auth/sign-in"
 
 type SignInDto = {
   login: string
-  email: string
   password: string
 }
 
@@ -15,12 +15,17 @@ type UseSignIn = () => {
 
 export const useSignIn: UseSignIn = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { authenticate } = useAuth()
+
+  const from = location.state?.from?.pathname || "/"
 
   const submit = async (data: SignInDto) => {
     const res = await api.post(URL, data)
 
     if (res.status === 200) {
-      navigate("/")
+      await authenticate()
+      navigate(from)
     }
   }
 

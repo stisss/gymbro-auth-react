@@ -45,7 +45,7 @@ export const Navbar: React.FC = () => {
               variant="contained"
               sx={{ ml: 4 }}
               onClick={logOut}
-              color="secondary"
+              color="primary"
             >
               Logout
             </Button>

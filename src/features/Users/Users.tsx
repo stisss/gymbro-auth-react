@@ -8,11 +8,17 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
 import Delete from "@mui/icons-material/Delete"
+import CircularProgress from "@mui/material/CircularProgress"
 import { useUsers } from "./useUsers"
 import { isoStringToLocaleString } from "../../utils/formatters"
 
 export const Users: React.FC = () => {
   const { users, removeUser } = useUsers()
+
+  if (!users) {
+    return <CircularProgress size={100} />
+  }
+
   return (
     <>
       <Typography variant="h2" sx={{ mt: 4, textAlign: "left" }}>
@@ -41,7 +47,7 @@ export const Users: React.FC = () => {
                 <TableCell>{isoStringToLocaleString(createdAt)}</TableCell>
                 <TableCell>{isAdmin.toString()}</TableCell>
                 <TableCell>
-                  <IconButton onClick={() => removeUser(id)}>
+                  <IconButton onClick={() => removeUser(id)} color="secondary">
                     <Delete></Delete>
                   </IconButton>
                 </TableCell>
