@@ -19,7 +19,7 @@ import {
   EditClientPage,
 } from "./pages"
 import { AuthProvider, useAuth } from "./hooks/useAuth"
-import { Navbar } from "./layout/NavBar"
+import { Navbar } from "./layout/Navbar"
 
 const ProtectedAdminRoute: React.FC<PropsWithChildren> = ({ children }) => {
   const { isFetching, isAdmin, isAuthenticated } = useAuth()
