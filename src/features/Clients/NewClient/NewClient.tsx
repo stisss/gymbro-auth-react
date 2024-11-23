@@ -144,7 +144,7 @@ export const NewClient: React.FC = () => {
           />
 
           <Button type="submit" variant="contained">
-            Create
+            Save
           </Button>
         </Box>
       </CardContent>

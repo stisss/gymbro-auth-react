@@ -8,8 +8,8 @@ import TableHead from "@mui/material/TableHead"
 import TableRow from "@mui/material/TableRow"
 import Typography from "@mui/material/Typography"
 import Delete from "@mui/icons-material/Delete"
-
 import { useUsers } from "./useUsers"
+import { isoStringToLocaleString } from "../../utils/formatters"
 
 export const Users: React.FC = () => {
   const { users, removeUser } = useUsers()
@@ -38,7 +38,7 @@ export const Users: React.FC = () => {
                 <TableCell>{id}</TableCell>
                 <TableCell>{login}</TableCell>
                 <TableCell>{email}</TableCell>
-                <TableCell>{createdAt}</TableCell>
+                <TableCell>{isoStringToLocaleString(createdAt)}</TableCell>
                 <TableCell>{isAdmin.toString()}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => removeUser(id)}>

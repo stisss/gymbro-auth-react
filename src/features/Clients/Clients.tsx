@@ -13,6 +13,7 @@ import Button from "@mui/material/Button"
 import Delete from "@mui/icons-material/Delete"
 import Edit from "@mui/icons-material/Edit"
 import { useClients } from "./useClients"
+import { isoStringToLocaleString } from "../../utils/formatters"
 
 export const Clients: React.FC = () => {
   const { clients, removeClient } = useClients()
@@ -68,7 +69,7 @@ export const Clients: React.FC = () => {
                   <TableCell>{secret}</TableCell>
                   <TableCell>{redirectUris.join(", ")}</TableCell>
                   <TableCell>{scopes.join(", ")}</TableCell>
-                  <TableCell>{new Date(createdAt).toLocaleString()}</TableCell>
+                  <TableCell>{isoStringToLocaleString(createdAt)}</TableCell>
                   <TableCell>{createdById}</TableCell>
                   <TableCell sx={{ display: "flex" }}>
                     <IconButton component={Link} to={`/clients/${id}`}>
